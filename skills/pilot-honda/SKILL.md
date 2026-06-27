@@ -1,6 +1,6 @@
 ---
 name: pilot-honda
-version: 1.0.0
+version: 2.0.0
 description: "Meta-orchestrator for BMad Method and GStack. Detects project maturity, routes to the right methodology, and provides a unified command interface."
 allowed-tools:
   - Bash
@@ -17,6 +17,10 @@ triggers:
   - what should I do next
   - should I use bmad or gstack
   - show me my commands
+  - airplan mode
+  - airplan
+  - autopilot
+  - fly the project
 ---
 
 # pilot-honda
@@ -70,33 +74,54 @@ pilot-honda reads from both plugins but NEVER writes to them:
 - `phase-map.md` — Unified lifecycle model
 - `scanner-rules.md` — Auto-scan instructions
 - `interview-tree.md` — Adaptive interview for new ideas
+- `airplan-pipeline.md` — Master execution pipeline for Airplan Mode
 
 **Project state** (read/write):
 - `.pilot-honda-state.md` in the project root — Session memory
+- `.pilot-honda-flight-plan.md` in the project root — Airplan flight plan (active flights only)
+- `.pilot-honda-flight-log.md` in the project root — Airplan flight log (append-only)
 
 ## Execution Flow
 
-### Step 0: Check for Command Proxy Request
+### Step 0: Check for Resume or Command Proxy
 
-Before entering diagnosis mode, check if the user is actually trying to invoke a specific command. If the user's message contains a recognizable command from either plugin (e.g., `/review`, `bmad-architecture`, `/qa`, `bmad-help`), skip diagnosis and go directly to **Command Proxy Mode** (Section 7).
+Before entering mode selection, check two things in order:
+
+**0a. Active flight plan?**
+Check if `.pilot-honda-flight-plan.md` exists in the project root. If found:
+- Read it and find the first step with status ⏳ PENDING or 🔄 IN PROGRESS
+- Count completed vs total steps
+- Ask:
+  > "✈️ **Active flight plan detected.** [X/Y] steps complete. Resume from Step [Z]: [command name]?"
+  > - A) ✈️ Resume flight
+  > - B) 📋 Show flight plan status
+  > - C) ❌ Cancel flight (keep artifacts, return to manual mode)
+- If A → Go to Step 10.4 (Execute Loop)
+- If B → Display the flight plan table, then ask again
+- If C → Rename the flight plan file to `.pilot-honda-flight-plan.cancelled.md` and continue to Step 1
+
+**0b. Command proxy?**
+If the user's message contains a recognizable command from either plugin (e.g., `/review`, `bmad-architecture`, `/qa`, `bmad-help`), skip mode selection and go directly to **Command Proxy Mode** (Step 7).
 
 ### Step 1: Mode Selection
 
-If the user is NOT invoking a specific command, ask:
+If the user is NOT resuming a flight or invoking a specific command, ask:
 
 > **🧭 pilot-honda — Project Navigator**
 >
 > I can help you figure out where you are and what to do next. Which mode?
 >
-> **A) I'm starting something new** — I'll ask a few smart questions to get you on the right path
-> **B) I have an existing project** — I'll scan your codebase and generate a maturity report
-> **C) Show me all available commands** — Quick reference of everything you can use
-> **D) I already know what I want** — Just tell me what to run and I'll find it
+> **A) I'm starting something new** — Smart interview to find your starting path
+> **B) Scan my project** — Generate a maturity report for an existing project
+> **C) ✈️ Airplan Mode** — Full autopilot. I scan, plan, and execute everything using both BMad and GStack
+> **D) Show all commands** — Quick reference of 60+ available commands
+> **E) Run a specific command** — Tell me what to run and I'll find it
 
 If A → Go to Step 2 (Interview Mode)
 If B → Go to Step 3 (Auto-Scan Mode)
-If C → Go to Step 6 (Command Reference)
-If D → Ask what they want to do, then go to Step 7 (Command Proxy)
+If C → Go to Step 10 (Airplan Mode)
+If D → Go to Step 6 (Command Reference)
+If E → Ask what they want to do, then go to Step 7 (Command Proxy)
 
 ### Step 2: Interview Mode (New Idea)
 
@@ -286,6 +311,178 @@ source_files: [count]
 test_files: [count]
 languages: [list]
 ```
+
+If Airplan Mode is active, also include:
+```markdown
+airplan:
+  active: [true/false]
+  flight_plan_file: .pilot-honda-flight-plan.md
+  current_step: [step number]
+  total_steps: [total]
+  last_completed_step: [step number]
+  gate_pending: [gate number or null]
+```
+
+### Step 10: Airplan Mode (Full Autopilot)
+
+Airplan Mode flies the entire project lifecycle on autopilot — scanning, planning, and auto-invoking commands from both BMad and GStack in the correct dependency order until the project is complete.
+
+**Key principle:** pilot-honda is a BRIDGE, not a replacement. Every command comes from the actual BMad or GStack SKILL.md files. pilot-honda just decides the ORDER and handles the transitions.
+
+#### Step 10.1: Scan
+
+Run the full codebase scanner (same as Step 3) using `scanner-rules.md`, but with additional output:
+- Phase scores (same as normal scan)
+- **Skip list** — specific pipeline steps to skip because artifacts already exist
+- **Validate-still list** — validation steps to keep even when the execute step is skipped
+
+#### Step 10.2: Build Flight Plan
+
+Read `airplan-pipeline.md` and generate the flight plan:
+1. Start with the full pipeline from `airplan-pipeline.md`
+2. Apply the skip list — mark pre-completed steps as ⏭️ SKIPPED
+3. Keep all Validate steps for skipped phases (dual-validation)
+4. Calculate total actionable step count
+5. Write `.pilot-honda-flight-plan.md` to the project root using the format from `airplan-pipeline.md`
+6. Create empty `.pilot-honda-flight-log.md` if it doesn't exist
+
+Present the flight plan to the user:
+> "✈️ **Flight plan generated.** [X] steps across [Y] phases. [Z] steps pre-completed from existing artifacts. 3 gate checkpoints will pause for your review."
+>
+> Show the execution tracker table.
+
+#### Step 10.3: Gate 0 — Approve Flight Plan
+
+Ask:
+> "Review the flight plan above. Ready for takeoff?"
+> - A) ✈️ Take off — execute the full plan
+> - B) ✏️ Let me adjust — remove or add steps
+> - C) ❌ Cancel — go back to manual mode
+
+If B → Let the user specify which steps to skip or add. Update the flight plan file.
+If C → Delete the flight plan file. Return to Step 1.
+If A → Continue to Step 10.4.
+
+#### Step 10.4: Execute Loop
+
+This is the core autopilot loop:
+
+```
+REPEAT:
+  1. Read .pilot-honda-flight-plan.md
+  2. Find the first step with status ⏳ PENDING
+  3. If none found → go to Step 10.7 (Flight Complete)
+  4. If step is a Gate → go to Step 10.5
+  5. Update the step status to 🔄 IN PROGRESS in the flight plan
+  6. Read command-registry.md to find the SKILL.md path for this command
+  7. Read the source SKILL.md from the plugin directory
+  8. Tell the user:
+     > "✈️ **Step [N]: [Command Name]** via [Plugin Name] ([Execute/Validate])"
+     > "Reading [plugin]/[path]/SKILL.md and executing..."
+  9. Execute the skill methodology (same rules as Step 7 Command Proxy)
+  10. When the skill completes:
+      a. Update .pilot-honda-flight-plan.md: step status → ✅, record timestamps
+      b. Append entry to .pilot-honda-flight-log.md with summary and artifacts
+      c. Update .pilot-honda-state.md with current progress
+  11. Check if next step is a Gate → if yes, go to Step 10.5
+  12. Otherwise → loop back to start
+END REPEAT
+```
+
+**Story Loop (Phase 4):**
+When the execute loop reaches Phase 4, it enters the story loop:
+- Read the sprint plan artifacts created by step 4.1 (`bmad-sprint-planning`)
+- Discover how many stories exist
+- For each story, execute steps 4.2 → 4.3 → 4.4 → 4.5 → 4.6 → 4.7
+- After all stories: execute 4.8, 4.9, 4.10 (post-implementation validation)
+- After all sprints: proceed to Gate 3
+
+**Context window management:**
+Each skill invocation consumes context. When context is running low:
+- Save state to both `.pilot-honda-state.md` and `.pilot-honda-flight-plan.md`
+- Tell the user: "Context is getting full. Start a new conversation and say 'pilot-honda' — I'll resume from Step [N]."
+- The resume logic in Step 0a handles the continuation seamlessly
+
+#### Step 10.5: Gate Checkpoint
+
+At each gate (Gate 1, Gate 2, Gate 3), pause and present:
+
+> "🚦 **Gate [N]: [Gate Name]**"
+>
+> **Steps completed since last gate:**
+> [list of completed steps with plugin tags]
+>
+> **Artifacts created:**
+> [list of files created by execute steps]
+>
+> **Validation results:**
+> [pass/fail for each validate step, with key findings]
+>
+> **Gate review questions:**
+> [specific questions from airplan-pipeline.md for this gate]
+>
+> Ready to continue?
+> - A) ✈️ Continue to next phase
+> - B) 🔄 Re-run a step — specify which step number
+> - C) ⏸️ Pause flight — save state and resume later
+> - D) 🛑 Abort flight — keep all artifacts created so far
+
+If A → Continue execute loop
+If B → Reset that step to ⏳ PENDING and re-enter execute loop
+If C → Mark flight as PAUSED in flight plan, save state. Resume via Step 0a.
+If D → Mark flight as ABORTED. Keep all files. Return to Step 1.
+
+#### Step 10.6: Pause & Resume
+
+**Pause (triggered by gate or context limit):**
+1. Update `.pilot-honda-flight-plan.md` — set status to PAUSED
+2. Update `.pilot-honda-state.md` — set airplan.active = true, current_step, etc.
+3. Tell the user: "Flight paused at Step [N]. Start a new conversation and say 'pilot-honda' to resume."
+
+**Resume (handled by Step 0a):**
+Detect the flight plan file on startup → offer to resume → re-enter execute loop.
+
+#### Step 10.7: Flight Complete
+
+When all steps are ✅ COMPLETE or ⏭️ SKIPPED:
+1. Update `.pilot-honda-flight-plan.md` — set status to COMPLETE
+2. Generate a **Final Flight Report**:
+
+```markdown
+# ✈️ pilot-honda — Flight Complete
+
+**Project:** [name]
+**Flight duration:** [first step timestamp] → [last step timestamp]
+**Steps executed:** [count] ([skipped] skipped, [failed] re-run)
+
+## Plugin Usage Summary
+| Plugin | Steps Executed | Steps Validated |
+|--------|---------------|----------------|
+| BMad Method | [count] | [count] |
+| GStack | [count] | [count] |
+
+## Phase Summary
+| Phase | Status | Key Artifacts |
+|-------|--------|---------------|
+| SPARK & ANALYSIS | ✅ | [files] |
+| PLANNING | ✅ | [files] |
+| SOLUTIONING | ✅ | [files] |
+| IMPLEMENTATION | ✅ | [files] |
+| SHIPPING | ✅ | [files] |
+| REFLECTION | ✅ | [files] |
+
+## Gate Review Results
+| Gate | Decision | Notes |
+|------|----------|-------|
+| Gate 1: Planning Readiness | PASSED | [notes] |
+| Gate 2: Implementation Readiness | PASSED | [notes] |
+| Gate 3: Ship Readiness | PASSED | [notes] |
+
+## Full Flight Log
+See `.pilot-honda-flight-log.md` for the complete execution history.
+```
+
+3. Update `.pilot-honda-state.md` — set airplan.active = false, all phases complete
 
 ### Step 9: Transition Alerts
 

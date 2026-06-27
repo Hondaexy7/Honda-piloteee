@@ -14,7 +14,8 @@
   - [For Claude Code](#2-for-claude-code)
 - [How to Use](#-how-to-use)
   - [Project Navigator (Diagnosis)](#1-project-navigator-diagnosis)
-  - [Universal Command Proxy](#2-universal-command-proxy)
+  - [✈️ Airplan Mode (Full Autopilot)](#2-️-airplan-mode-full-autopilot)
+  - [Universal Command Proxy](#3-universal-command-proxy)
 - [Under the Hood: The Unified Lifecycle](#-under-the-hood-the-unified-lifecycle)
 - [Architecture & File Structure](#-architecture--file-structure)
 - [Updating](#-updating)
@@ -38,10 +39,12 @@ It works natively in both **Antigravity IDE** and **Claude Code**.
 
 - **🧠 Adaptive Diagnosis:** Tell it about a new idea, and it runs a smart, branching interview (max 5-7 questions) to find your starting point.
 - **🔍 Auto-Scanner:** Point it at an existing project, and it scans your artifacts (PRDs, tests, code, CI/CD) to generate a detailed Project Maturity Report.
+- **✈️ Airplan Mode:** Full autopilot. Scans your project, builds a dependency-ordered flight plan across both plugins, and auto-executes every step with gate checkpoints and dual-validation.
 - **🔀 Universal Command Proxy:** Type any command from either plugin (e.g., `/review`, `bmad-architecture`, `/qa`) and pilot-honda will execute the correct methodology natively.
 - **💾 Session Memory:** Remembers your project state between sessions via a `.pilot-honda-state.md` file, tracking your progress automatically.
 - **🛡️ Conflict Guard:** Safely manages environments where both BMad and GStack are installed, preventing overlapping actions.
 - **🌐 Cross-Platform:** 100% compatible with both Antigravity IDE and Claude Code from a single source of truth.
+- **🔄 Dual-Validation:** BMad creates, GStack validates (and vice versa) at every stage — more powerful than either plugin alone.
 
 ---
 
@@ -91,12 +94,34 @@ When you're lost or starting out, ask pilot-honda for directions:
 - **In Antigravity:** Type `"pilot-honda"` or ask *"what should I do next?"*
 - **In Claude Code:** Type `/pilot-honda`
 
-It will offer you modes:
-- **Start something new:** A quick interview to route your raw idea.
-- **Scan existing project:** A deep analysis of your codebase maturity.
-- **Show all commands:** A cheat sheet of the 60+ commands across both methodologies.
+It will offer you five modes:
+- **A) Start something new:** A quick interview to route your raw idea.
+- **B) Scan existing project:** A deep analysis of your codebase maturity.
+- **C) ✈️ Airplan Mode:** Full autopilot (see below).
+- **D) Show all commands:** A cheat sheet of the 60+ commands across both methodologies.
+- **E) Run a specific command:** Tell it what to run.
 
-### 2. Universal Command Proxy
+### 2. ✈️ Airplan Mode (Full Autopilot)
+
+The flagship feature. Say `"airplan"` or select option C.
+
+**What happens:**
+1. **Scan** — pilot-honda scans your entire codebase and docs
+2. **Flight Plan** — generates a dependency-ordered execution plan across both BMad and GStack, skipping phases you've already completed
+3. **Gate 0** — shows you the plan and asks for approval
+4. **Auto-Execute** — runs each step in sequence, automatically invoking the right skill from the right plugin
+5. **Gate Checkpoints** — pauses at 3 critical transitions (planning readiness, implementation readiness, ship readiness) for your review
+6. **Flight Complete** — generates a final report with full plugin usage stats
+
+**Dual-Validation:** After BMad creates an artifact (e.g., architecture), GStack automatically validates it (e.g., `/plan-eng-review`). This cross-plugin check is what makes pilot-honda more powerful than either methodology alone.
+
+**Pause & Resume:** Close mid-flight, start a new session, say `"pilot-honda"` — it picks up exactly where you left off.
+
+**Files generated:**
+- `.pilot-honda-flight-plan.md` — tracks every step with status and timestamps
+- `.pilot-honda-flight-log.md` — append-only black box recorder
+
+### 3. Universal Command Proxy
 
 You don't need to invoke pilot-honda directly if you know what you want. Just type the command!
 
@@ -138,7 +163,8 @@ pilot-honda/
         ├── command-registry.md          # Maps all 60+ commands to source plugins
         ├── phase-map.md                 # Unified Phase 0-6 lifecycle model
         ├── scanner-rules.md             # Heuristics for auto-detecting maturity
-        └── interview-tree.md            # Adaptive decision tree for new ideas
+        ├── interview-tree.md            # Adaptive decision tree for new ideas
+        └── airplan-pipeline.md          # Master execution pipeline for Airplan Mode
 ```
 
 The core `SKILL.md` contains YAML frontmatter for Claude Code slash-command registration, but relies on platform-agnostic heuristics to function perfectly in Antigravity as well.

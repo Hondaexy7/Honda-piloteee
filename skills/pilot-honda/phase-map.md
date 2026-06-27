@@ -18,6 +18,26 @@ Phase 6: REFLECTION     → Retrospective, documentation, learnings
 
 ---
 
+## Dual-Validation Pairs (Cross-Plugin Checks)
+
+The core power of using both plugins: one creates, the other validates.
+
+| BMad Creates (Execute) | GStack Validates | Purpose |
+|------------------------|-----------------|---------|
+| `bmad-forge-idea` | `/office-hours` | Reframe and pressure-test the idea |
+| `bmad-product-brief` | `/plan-ceo-review` | Strategic stress-test of the concept |
+| `bmad-prd` | `/plan-ceo-review` | Strategic alignment of requirements |
+| `bmad-ux` | `/plan-design-review` | Rate each design dimension 0-10 |
+| `bmad-architecture` | `/plan-eng-review` | Lock architecture, find gaps and edge cases |
+| `bmad-dev-story` (code) | `/review` | Diff-level production bug detection |
+| `bmad-code-review` (story) | `/review` | Complementary: acceptance criteria vs code quality |
+| `bmad-qa-generate-e2e-tests` | `/qa` | Run generated tests in a real browser |
+| `bmad-retrospective` | `/retro` | Epic-scoped lessons vs time-scoped metrics |
+
+> **Note:** Dual-validation is what makes pilot-honda more powerful than either plugin alone. Airplan Mode runs these pairs automatically.
+
+---
+
 ## Phase-to-Plugin Mapping
 
 ### Phase 0: SPARK (No artifacts exist)

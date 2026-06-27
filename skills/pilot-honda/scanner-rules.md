@@ -269,3 +269,57 @@ Write `.pilot-honda-state.md` to the project root with:
 
 On subsequent runs, compare the new scan against the saved state to show progress:
 > "Since your last scan (3 days ago): Architecture doc was added ✅, 12 new source files, still no tests."
+
+---
+
+## Step 7: Airplan Skip Logic (Airplan Mode Only)
+
+When scanning for Airplan Mode (SKILL.md Step 10), the scanner must produce additional output beyond the normal phase scores. This tells the flight plan builder which pipeline steps to skip and which validation steps to keep.
+
+### Produce a Skip List
+
+Map each detected artifact to a specific pipeline step number from `airplan-pipeline.md`:
+
+| Artifact Found | Pipeline Step to Skip | Reason |
+|---------------|----------------------|--------|
+| `**/forge*`, `**/brainstorm*` | 0.1 (bmad-forge-idea) | Ideation already done |
+| `**/brief*`, `**/product-brief*` | 1.1 (bmad-product-brief) | Product brief exists |
+| `**/research*` | 1.3, 1.4, 1.5 (research steps) | Research already done |
+| `**/prd*`, `**/requirements*` | 2.1 (bmad-prd) | PRD exists |
+| `**/ux*`, `**/wireframe*` | 2.2 (bmad-ux) | UX design exists |
+| `**/architecture*`, `**/ARCHITECTURE.md` | 3.1 (bmad-architecture) | Architecture exists |
+| `**/epic*` | 3.3 (bmad-create-epics-and-stories) | Epics exist |
+| `**/readiness*` | 3.4 (bmad-check-implementation-readiness) | Readiness checked |
+| Source code files exist | 4.3 (bmad-dev-story) — partially | Code started (sprint may be in progress) |
+
+### Produce a Validate-Still List
+
+Even when an Execute step is skipped, the corresponding GStack Validate step should still run (unless evidence shows it already ran):
+
+| Execute Step Skipped | Keep This Validate Step | Unless... |
+|---------------------|------------------------|-----------|
+| 0.1 (bmad-forge-idea) | 0.2 (/office-hours) | Already CEO-reviewed |
+| 1.1 (bmad-product-brief) | 1.2 (/plan-ceo-review) | CEO review artifacts found |
+| 2.2 (bmad-ux) | 2.3 (/plan-design-review) | Design review artifacts found |
+| 3.1 (bmad-architecture) | 3.2 (/plan-eng-review) | Eng review artifacts found |
+
+### Output Format
+
+```markdown
+## Airplan Scanner Results
+
+skip_steps:
+  - 0.1 bmad-forge-idea (forge output found at docs/forge.md)
+  - 1.1 bmad-product-brief (product brief found at planning-artifacts/brief.md)
+  - 2.1 bmad-prd (PRD found at planning-artifacts/prd.md)
+  - 3.1 bmad-architecture (architecture found at planning-artifacts/architecture.md)
+
+validate_still:
+  - 0.2 /office-hours (idea exists but never stress-tested via GStack)
+  - 1.2 /plan-ceo-review (brief exists but never CEO-reviewed)
+  - 3.2 /plan-eng-review (architecture exists but never eng-reviewed)
+
+execute_from: 3.3 (first pending required step: bmad-create-epics-and-stories)
+```
+
+The flight plan builder (SKILL.md Step 10.2) reads this output to pre-populate the flight plan with the correct statuses.

@@ -14,7 +14,7 @@ Options:
 - **A) I have a raw idea — haven't written anything down yet** → Go to Q1
 - **B) I have some notes or a rough concept** → Go to Q2
 - **C) I have a detailed plan/PRD but haven't started coding** → Go to Q4
-- **D) I have code but need to organize my process** → Switch to Mode B (Auto-Scan)
+- **D) I have code but need to organize my process** → Suggest: "Sounds like you'd benefit from **Airplan Mode** (option C on the main menu) — it scans your codebase and auto-drives the whole process." Otherwise, switch to Mode B (Auto-Scan)
 
 ---
 
