@@ -1,0 +1,9 @@
+{
+  "name": "pilot-honda",
+  "version": "1.0.0",
+  "description": "Meta-orchestrator for BMad Method and GStack. Detects project maturity, routes to the right methodology, and provides a unified command interface.",
+  "author": {
+    "name": "Honda"
+  },
+  "license": "MIT"
+}
