@@ -35,6 +35,27 @@ It works natively in both **Antigravity IDE** and **Claude Code**.
 
 ---
 
+## 🍦 The Crème de la Crème (How it works in practice)
+
+Rather than giving you 80 different commands to choose from, `pilot-honda` extracts the absolute best parts—the crème de la crème—from each methodology and strings them together into a single "Golden Path".
+
+It surgically combines their strengths so they cover each other's blind spots:
+
+**1. BMad for Architecture & Agile (The Creator)**
+BMad is undeniably better at deep system design and agile breakdown. We exclusively use BMad for:
+- **Creation:** Generating the PRD (`bmad-prd`), designing UX (`bmad-ux`), and writing the architecture (`bmad-architecture`).
+- **Agile Mechanics:** Breaking work into tickets (`bmad-create-epics-and-stories`), planning sprints (`bmad-sprint-planning`), and doing the initial story coding (`bmad-dev-story`).
+
+**2. GStack for Stress-Testing & Shipping (The Validator)**
+GStack is undeniably better at ruthless interrogation, diff-level code reviews, and production shipping. We exclusively use GStack for:
+- **Stress-Testing Strategy:** Interrogating the idea (`/office-hours`) and grilling the CEO on strategy (`/plan-ceo-review`).
+- **Stress-Testing Tech:** Auditing the BMad architecture to find edge cases (`/plan-eng-review`).
+- **Review & Ship:** Doing Staff-Engineer level code reviews (`/review`), live browser testing (`/qa`), and merging to production (`/ship`).
+
+By combining them, `pilot-honda` **never uses BMad for something GStack is better at, and never uses GStack for something BMad is better at.** You get dual-validation at every step: BMad creates, GStack validates.
+
+---
+
 ## ✨ Key Features
 
 - **🧠 Adaptive Diagnosis:** Tell it about a new idea, and it runs a smart, branching interview (max 5-7 questions) to find your starting point.
