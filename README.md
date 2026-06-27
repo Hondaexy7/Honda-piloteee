@@ -95,10 +95,10 @@ When you're lost or starting out, ask pilot-honda for directions:
 - **In Claude Code:** Type `/pilot-honda`
 
 It will offer you five modes:
-- **A) Start something new:** A quick interview to route your raw idea.
-- **B) Scan existing project:** A deep analysis of your codebase maturity.
+- **A) Start something new:** A quick interview to route your raw idea. Includes dual-validation pairs and a full journey preview.
+- **B) Scan existing project:** A deep analysis of your codebase maturity, with progress comparison, effort estimates, and paired recommendations.
 - **C) ✈️ Airplan Mode:** Full autopilot (see below).
-- **D) Show all commands:** A cheat sheet of the 60+ commands across both methodologies.
+- **D) Show all commands:** A phase-grouped reference of all 60+ commands, their validation pairs, and a "where to start" guide.
 - **E) Run a specific command:** Tell it what to run.
 
 ### 2. ✈️ Airplan Mode (Full Autopilot)
@@ -132,6 +132,8 @@ Examples:
 - `"Run bmad-code-review"` → Executes BMad's story-level acceptance criteria review
 
 pilot-honda will intercept the request, look up the command in its registry, locate the specific `SKILL.md` in your local BMad or GStack installation, and execute the exact methodology.
+
+**Post-Execution Magic:** After the command finishes, pilot-honda will proactively suggest the logical validation pair (e.g., "Want me to run `/plan-eng-review` to cross-check this?") and tell you the next step in your lifecycle.
 
 ---
 

@@ -161,6 +161,23 @@ Output the report in this exact format:
 
 ---
 
+## 📈 Progress Since Last Scan
+*(Only include if `.pilot-honda-state.md` exists with previous state)*
+**Last scan:** [date from state]
+**Changes detected:**
+- [✅ NEW / ⚠️ STILL MISSING]: [observation]
+- [✅ NEW / ⚠️ STILL MISSING]: [observation]
+
+---
+
+## 📊 Effort Estimate
+**Phases remaining:** [X] of 7
+**Estimated steps to ship:** ~[Y] (using both plugins)
+**Next gate checkpoint:** [Gate name from airplan-pipeline.md]
+💡 **Tip:** For full autopilot, run `pilot-honda` → Airplan Mode
+
+---
+
 ## Lifecycle Map
 
 | Phase | Status | Evidence | Recommended Plugin |
@@ -183,16 +200,19 @@ Output the report in this exact format:
 ## ⚡ Recommended Next Steps
 
 ### Do Now:
-1. **[Action]** → [Plugin] [Skill Name]
+1. **[Action]** → [Plugin] [Skill Name] ([Execute/Validate])
    - Command: `"[exact command to type]"`
+   - Then validate: `[paired validation command if applicable]` ([Plugin] → Validate)
    - Why: [one sentence explaining why this is the priority]
 
 ### Do Next:
-2. **[Action]** → [Plugin] [Skill Name]
+2. **[Action]** → [Plugin] [Skill Name] ([Execute/Validate])
    - Command: `"[exact command to type]"`
+   - Then validate: `[paired validation command if applicable]` ([Plugin] → Validate)
 
-3. **[Action]** → [Plugin] [Skill Name]
+3. **[Action]** → [Plugin] [Skill Name] ([Execute/Validate])
    - Command: `"[exact command to type]"`
+   - Then validate: `[paired validation command if applicable]` ([Plugin] → Validate)
 
 ### For Future Features:
 - New feature ideas → Start with BMad `bmad-product-brief` or GStack `/office-hours`
@@ -241,20 +261,25 @@ When the user asks to see all available commands, read `skills/pilot-honda/comma
 ```markdown
 ## 📚 All Available Commands
 
-### BMad Method (Planning & Architecture)
-| Command | What it does |
-|---------|-------------|
-[table of BMad commands]
+### Organized by Phase
 
-### GStack (Execution & Shipping)
-| Command | What it does |
-|---------|-------------|
-[table of GStack commands]
+#### Phase 0-1: Idea → Analysis
+| # | Command | Plugin | What it does | Paired With |
+|---|---------|--------|-------------|-------------|
+| 1 | `bmad-forge-idea` | BMad | Pressure-test an idea | → `/office-hours` |
+| 2 | `/office-hours` | GStack | Six forcing questions | validates ← 1 |
+| 3 | `bmad-product-brief` | BMad | Nail down concept | → `/plan-ceo-review` |
+| 4 | `/plan-ceo-review` | GStack | Strategic stress-test | validates ← 3 |
 
-### Overlapping (disambiguation needed)
-| Command | BMad version | GStack version |
-|---------|-------------|----------------|
-[table of overlapping commands with differences]
+[... continue for all phases from command-registry.md ...]
+
+### 🏁 Where to Start?
+Based on common scenarios:
+- **"I have an idea"** → Start at `bmad-forge-idea`
+- **"I have a PRD"** → Start at `bmad-architecture`
+- **"I have code"** → Start at `/review`
+- **"Ready to ship"** → Start at `/ship`
+- **"Not sure"** → Run `pilot-honda` → Mode A or B
 ```
 
 ### Step 7: Command Proxy Mode
@@ -274,6 +299,20 @@ When the user invokes a specific command:
    - **PRESERVE** the skill's decision points — when the skill says to ask the user, ask the user
    - **On Claude Code:** GStack skills can run natively including their preambles. BMad skills should be followed as methodology.
    - **On Antigravity:** Both plugins' skills are followed as methodology (skip bash preambles for both).
+6. **Post-execution (after the proxied skill completes):**
+   a. Update `.pilot-honda-state.md` — record which phase was just worked on and add to history
+   b. Check `phase-map.md` for a dual-validation pair:
+      - If the executed command has a paired validator → suggest it:
+        > "✅ `[command]` complete. This has a validation pair:
+        > Run `[paired_command]` ([Plugin]) to cross-check it.
+        > Want me to run it now?"
+   c. Check `phase-map.md` for the next logical step in the lifecycle:
+      - Suggest it:
+        > "Your next step in the lifecycle: `[next_command]`
+        > ([Plugin] → [Execute/Validate]). Want me to run it?"
+   d. If the command was the last step before a phase transition → alert:
+      > "🔄 You've completed the [PHASE NAME] phase. Time to transition
+      > to [NEXT PHASE NAME]. Start with `[first_command_of_next_phase]`."
 
 ### Step 8: Save State
 
@@ -299,6 +338,12 @@ phase_scores:
   shipping: [complete/partial/missing]
   documentation: [complete/partial/missing]
 active_plugin: [bmad/gstack/both]
+history:
+  - [ISO timestamp]: Ran [command] ([Plugin] → [Execute/Validate]) — [Phase]
+last_command: [exact command string]
+last_command_plugin: [BMad/GStack]
+last_command_type: [Execute/Validate]
+validation_pending: [paired validation command if applicable, or null]
 next_recommended: [skill name]
 next_command: [exact command string]
 plugins_detected:

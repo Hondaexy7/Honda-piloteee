@@ -24,9 +24,10 @@ Options:
 
 Options:
 - **A) Very vague — I know the problem but not the solution** → Recommend:
-  - Start with BMad `bmad-brainstorming` to explore the space
-  - Then use BMad `bmad-forge-idea` to pressure-test and harden it
-  - Commands: `"Run bmad-brainstorming"` then `"Run bmad-forge-idea"`
+  - Start with BMad `bmad-brainstorming` to explore the space (BMad → Execute)
+  - Then use BMad `bmad-forge-idea` to pressure-test and harden it (BMad → Execute)
+  - Command: `"Run bmad-brainstorming"` then `"Run bmad-forge-idea"`
+  - Then validate with GStack: `"Run /office-hours"` (GStack → Validate)
   - **STOP. Generate mini-report and save state.**
 
 - **B) I know roughly what I want to build** → Go to Q2
@@ -41,19 +42,21 @@ Options:
 
 Options:
 - **A) Let me validate it first — challenge my assumptions** → Recommend:
-  - Use BMad `bmad-prfaq` for the Working Backwards PRFAQ gauntlet
+  - Use BMad `bmad-prfaq` for the Working Backwards PRFAQ gauntlet (BMad → Execute)
   - This will stress-test your concept before you invest time
   - Command: `"Run bmad-prfaq"`
+  - Then validate with GStack: `"Run /plan-ceo-review"` (GStack → Validate)
   - Alternative: GStack `/office-hours` for a faster reframing session
   - **STOP. Generate mini-report and save state.**
 
 - **B) I'm confident — just help me document it properly** → Recommend:
-  - Use BMad `bmad-product-brief` for a gentle, guided product brief
+  - Use BMad `bmad-product-brief` for a gentle, guided product brief (BMad → Execute)
   - Command: `"Run bmad-product-brief"`
+  - Then validate with GStack: `"Run /plan-ceo-review"` (GStack → Validate)
   - **STOP. Generate mini-report and save state.**
 
 - **C) I want a quick reframe before diving in** → Recommend:
-  - Use GStack `/office-hours` — six forcing questions to reframe the product
+  - Use GStack `/office-hours` — six forcing questions to reframe the product (GStack → Execute/Validate)
   - Command: `"Run /office-hours"`
   - **STOP. Generate mini-report and save state.**
 
@@ -65,13 +68,14 @@ Options:
 
 Options:
 - **A) A product brief (what am I building and why)** → Recommend:
-  - BMad `bmad-product-brief` or `bmad-prfaq`
+  - BMad `bmad-product-brief` or `bmad-prfaq` (BMad → Execute)
   - Command: `"Run bmad-product-brief"`
+  - Then validate with GStack: `"Run /plan-ceo-review"` (GStack → Validate)
 
 - **B) Full requirements (PRD with features, constraints, success metrics)** → Go to Q4
 
 - **C) A technical spec (how will it work)** → Recommend:
-  - BMad `bmad-spec` for a lean spec, or go straight to GStack `/spec`
+  - BMad `bmad-spec` for a lean spec, or go straight to GStack `/spec` (Execute)
   - Command: `"Run bmad-spec"` or `"Run /spec"`
 
 ---
@@ -82,18 +86,19 @@ Options:
 
 Options:
 - **A) No architecture yet** → Recommend:
-  - Use BMad's Architect agent (Winston) via `bmad-architecture`
+  - Use BMad's Architect agent (Winston) via `bmad-architecture` (BMad → Execute)
   - This will create the system spine: invariants, data flows, technology choices
   - Command: `"Run bmad-architecture"`
+  - Then validate with GStack: `"Run /plan-eng-review"` (GStack → Validate)
   - After that: `"Run bmad-create-epics-and-stories"` to break it into implementable pieces
-  - Then validate with: `"Run bmad-check-implementation-readiness"`
+  - Then check readiness with: `"Run bmad-check-implementation-readiness"`
   - **STOP. Generate mini-report and save state.**
 
 - **B) Yes, I have an architecture plan** → Go to Q5
 
 - **C) I have a rough idea but nothing formal** → Recommend:
-  - Start with BMad `bmad-architecture` to formalize it
-  - Then validate with GStack `/plan-eng-review` for a second opinion
+  - Start with BMad `bmad-architecture` to formalize it (BMad → Execute)
+  - Then validate with GStack `/plan-eng-review` for a second opinion (GStack → Validate)
   - Commands: `"Run bmad-architecture"` then `"Run /plan-eng-review"`
   - **STOP. Generate mini-report and save state.**
 
@@ -105,9 +110,9 @@ Options:
 
 Options:
 - **A) I need to break it into epics and stories** → Recommend:
-  - BMad `bmad-create-epics-and-stories` to create the work breakdown
-  - Then `bmad-check-implementation-readiness` to verify everything is aligned
-  - Then `bmad-sprint-planning` to plan the first sprint
+  - BMad `bmad-create-epics-and-stories` to create the work breakdown (BMad → Execute)
+  - Then `bmad-check-implementation-readiness` to verify everything is aligned (BMad → Execute)
+  - Then `bmad-sprint-planning` to plan the first sprint (BMad → Execute)
   - Commands in order:
     1. `"Run bmad-create-epics-and-stories"`
     2. `"Run bmad-check-implementation-readiness"`
@@ -117,7 +122,7 @@ Options:
 - **B) I have epics/stories — ready to code** → Go to Q6
 
 - **C) I want to skip the breakdown and just start building** → Recommend:
-  - Use GStack `/autoplan` for a fast all-in-one review pipeline
+  - Use GStack `/autoplan` for a fast all-in-one review pipeline (GStack → Execute)
   - Then start coding with GStack as your primary tool
   - Command: `"Run /autoplan"`
   - **STOP. Generate mini-report and save state.**
@@ -130,20 +135,22 @@ Options:
 
 Options:
 - **A) Write the code** → Recommend:
-  - BMad `bmad-dev-story` for structured story-by-story development
-  - Or BMad `bmad-quick-dev` for a faster intent→code flow
-  - Commands: `"Run bmad-dev-story"` or `"Run bmad-quick-dev"`
+  - BMad `bmad-dev-story` for structured story-by-story development (BMad → Execute)
+  - Command: `"Run bmad-dev-story"`
+  - Then validate with GStack: `"Run /review"` (GStack → Validate)
 
 - **B) Review existing code** → Recommend:
-  - GStack `/review` for diff-level code review
-  - Command: `"Run /review"`
+  - BMad `bmad-code-review` for story acceptance criteria (BMad → Execute)
+  - Then validate with GStack `/review` for diff-level code review (GStack → Validate)
+  - Commands: `"Run bmad-code-review"` then `"Run /review"`
 
 - **C) Test what I've built** → Recommend:
-  - GStack `/qa` to test in a real browser and fix bugs
-  - Command: `"Run /qa"`
+  - BMad `bmad-qa-generate-e2e-tests` to create tests (BMad → Execute)
+  - Then validate with GStack `/qa` to test in a real browser (GStack → Validate)
+  - Commands: `"Run bmad-qa-generate-e2e-tests"` then `"Run /qa"`
 
 - **D) Ship it** → Recommend:
-  - GStack `/review` first, then `/ship` to push PR
+  - GStack `/review` first, then `/ship` to push PR (GStack → Execute)
   - Commands: `"Run /review"` then `"Run /ship"`
 
 ---
@@ -157,17 +164,25 @@ After reaching a recommendation, generate a brief report:
 
 **Current Phase:** [Phase name]
 **Active Plugin:** [BMad Method / GStack / Both]
+**Estimated Steps to Ship:** [count from phase-map.md]
 
-### Your Path Forward:
-1. **Now:** [Exact command] — [Why]
-2. **Next:** [Exact command] — [Why]
-3. **After that:** [Exact command] — [Why]
+### Your Path Forward (with validation):
+1. **Now:** `[exact command]` (Plugin → Execute)
+   - Then validate: `[exact command]` (Plugin → Validate)
+2. **Next:** `[exact command]` (Plugin → Execute)
+3. **After that:** `[exact command]` (Plugin → Execute)
+
+### Your Full Journey Preview:
+[Current phase] → [next phase] → [next phase] → ... → SHIPPED
+Example: "SOLUTIONING → IMPLEMENTATION → SHIPPING → REFLECTION"
+Estimated remaining phases: [X] | Estimated remaining steps: ~[Y]
 
 ### For Future Reference:
 - When you finish planning → Switch to GStack for execution
-- For new features later → Start with BMad `bmad-product-brief` or GStack `/office-hours`
+- For new features later → BMad `bmad-product-brief` or GStack `/office-hours`
 - For bug fixes → GStack `/investigate`
-- To check where you are anytime → Run `pilot-honda` again
+- To check where you are anytime → `pilot-honda`
+- To go full autopilot → `pilot-honda` → Airplan Mode
 ```
 
 Save this to `.pilot-honda-state.md` in the project root.
