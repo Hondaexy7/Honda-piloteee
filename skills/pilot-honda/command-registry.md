@@ -1,6 +1,6 @@
 # pilot-honda — Command Registry
 
-This registry maps every available command from both BMad Method and GStack to its source SKILL.md file, phase, and prerequisites. When the user invokes a command, this file tells pilot-honda where to find the skill definition and how to execute it.
+This registry maps every available command from BMad Method, GStack, and Taste-Skill to its source SKILL.md file, phase, and prerequisites. When the user invokes a command, this file tells pilot-honda where to find the skill definition and how to execute it.
 
 ---
 
@@ -11,7 +11,9 @@ This registry maps every available command from both BMad Method and GStack to i
 3. If found: reads the source SKILL.md file from the plugin directory and follows its methodology
 4. If not found: asks the user to clarify what they want
 
-**Important:** When executing a skill from either plugin in Antigravity, skip any Claude Code-specific sections (bash preambles, `~/.claude/skills/` paths, CLAUDE.md writes, telemetry logging). Focus on the **methodology content** — the workflow steps, checklists, quality gates, and output formats.
+**Important:** When executing a skill from any plugin in Antigravity, skip any Claude Code-specific sections (bash preambles, `~/.claude/skills/` paths, CLAUDE.md writes, telemetry logging). Focus on the **methodology content** — the workflow steps, checklists, quality gates, and output formats.
+
+**Taste-Skill v1/v2 rule:** Always default to v2 (`skills/taste-skill/SKILL.md`). Route to v1 (`skills/taste-skill-v1/SKILL.md`) only when the user explicitly requests it, or when the scanner detects v1-style Framer Motion `layoutId`/`staggerChildren` bento patterns in existing code.
 
 ---
 
@@ -172,4 +174,52 @@ Some commands appear similar across both plugins. When the user types an ambiguo
 | "architecture" | BMad `bmad-architecture` OR GStack `/plan-eng-review` | BMad `bmad-architecture` creates it. GStack `/plan-eng-review` validates it. Route based on whether architecture already exists. |
 | "QA" / "test" | BMad `bmad-qa-generate-e2e-tests` OR GStack `/qa` | BMad generates test code. GStack runs tests in a real browser. Ask: "Generate test code or run live QA?" |
 | "retrospective" | BMad `bmad-retrospective` OR GStack `/retro` | BMad is epic-scoped. GStack is time-scoped (weekly). Ask: "End of epic retro or weekly retro?" |
-| "design" | BMad `bmad-ux` OR GStack `/design-consultation` | BMad focuses on UX flows/wireframes. GStack builds full design systems. Route based on what exists. |
+| "design" | BMad `bmad-ux` OR GStack `/design-consultation` OR Taste `taste-design-system` | BMad = UX flows/wireframes. GStack = design system audit/review. Taste = premium visual aesthetic blueprint. Ask: "Functional UX layout, design system review, or premium visual styling?" Default to Taste `taste-design-system` if no design artifacts exist. |
+| "redesign" | Taste `taste-redesign` OR BMad `bmad-ux` | Taste for visual upgrades to existing frontend (keep structure, fix aesthetics). BMad for full UX re-architecture. Ask: "Visual polish keeping existing structure, or full UX overhaul?" Default to Taste if code exists and design looks generic. |
+| "mockup" | Taste `taste-imagegen-web` / `taste-imagegen-mobile` OR BMad `bmad-ux` | Taste generates visual reference images. BMad creates wireframe descriptions in text. Ask: "Visual reference image or UX wireframe document?" |
+| "polish" / "make it look better" | Taste `taste-apply` OR GStack `/design-review` | Taste `taste-apply` actively rewrites code to remove generic patterns. GStack `/design-review` audits and reports issues. Default to Taste `taste-apply` for code changes, GStack `/design-review` for a report only. |
+| "brand" / "logo" | Taste `taste-brandkit` OR BMad `bmad-product-brief` | Taste generates visual brand identity images. BMad documents the brand positioning in text. Ask: "Visual brand assets (logo, palette, typography mockups) or brand positioning document?" |
+
+---
+
+## Taste-Skill Commands
+
+Source: `D:\AntigravityPlugins\taste-skill\`
+
+**Scope boundary:** Taste-Skill is for landing pages, portfolios, marketing sites, and redesigns. It is NOT for dashboards, data tables, admin panels, multi-step product UIs, or CLI tools. If the brief is out of scope, skip taste-skill and say so explicitly.
+
+### Phase 2.5: Design Engineering (Visual Direction & System)
+
+| Command | Aliases | Source SKILL.md | Phase |
+|---------|---------|----------------|-------|
+| `taste-design-system` | "design system", "design taste", "anti-slop", "set up design" | `skills/taste-skill/SKILL.md` | Phase 2.5 |
+| `taste-stitch` | "stitch design", "generate DESIGN.md", "design doc" | `skills/stitch-skill/SKILL.md` | Phase 2.5 |
+| `taste-soft` | "soft design", "premium look", "expensive feel", "agency look" | `skills/soft-skill/SKILL.md` | Phase 2.5 |
+| `taste-minimalist` | "minimalist", "editorial style", "notion style", "linear style", "clean" | `skills/minimalist-skill/SKILL.md` | Phase 2.5 |
+| `taste-brutalist` | "brutalist", "raw design", "swiss", "tactical" | `skills/brutalist-skill/SKILL.md` | Phase 2.5 |
+| `taste-brandkit` | "brand kit", "logo", "brand identity", "brand assets" | `skills/brandkit/SKILL.md` | Phase 2.5 |
+| `taste-v1` | "taste v1", "old taste", "framer bento" | `skills/taste-skill-v1/SKILL.md` | Phase 2.5 (legacy only) |
+
+### Phase 2.5: Image-First Design (requires image generation capability)
+
+| Command | Aliases | Source SKILL.md | Phase |
+|---------|---------|----------------|-------|
+| `taste-image-first` | "image to code", "design reference", "visual reference", "image first" | `skills/image-to-code-skill/SKILL.md` | Phase 2.5 |
+| `taste-imagegen-web` | "web mockup", "generate web design", "web sections" | `skills/imagegen-frontend-web/SKILL.md` | Phase 2.5 |
+| `taste-imagegen-mobile` | "mobile mockup", "generate mobile design", "mobile screens", "app screens" | `skills/imagegen-frontend-mobile/SKILL.md` | Phase 2.5 |
+
+**Image generation note:** If the current platform cannot generate images, offer `taste-stitch` (generates a semantic DESIGN.md) or `taste-design-system` (text-based design blueprint) as text-only alternatives.
+
+### Phase 4: Implementation Polish (apply during/after coding)
+
+| Command | Aliases | Source SKILL.md | Phase |
+|---------|---------|----------------|-------|
+| `taste-apply` | "apply taste", "make it premium", "remove generic", "polish UI" | `skills/taste-skill/SKILL.md` | Phase 4 |
+| `taste-redesign` | "redesign", "upgrade design", "fix the UI", "visual audit" | `skills/redesign-skill/SKILL.md` | Phase 4 |
+| `taste-gpt` | "awwwards", "GSAP motion", "premium motion", "cinematic" | `skills/gpt-tasteskill/SKILL.md` | Phase 4 |
+
+### Anytime (universal quality enforcement)
+
+| Command | Aliases | Source SKILL.md | Phase |
+|---------|---------|----------------|-------|
+| `taste-output` | "full output", "no lazy code", "no placeholders", "complete the code" | `skills/output-skill/SKILL.md` | anytime |

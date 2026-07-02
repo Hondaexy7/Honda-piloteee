@@ -1,7 +1,7 @@
 ---
 name: pilot-honda
-version: 2.0.0
-description: "Meta-orchestrator for BMad Method and GStack. Detects project maturity, routes to the right methodology, and provides a unified command interface."
+version: 3.0.0
+description: "Meta-orchestrator for BMad Method, GStack, and Taste-Skill. Detects project maturity, routes to the right methodology, enforces premium design standards, and provides a unified command interface across all three plugins."
 allowed-tools:
   - Bash
   - Read
@@ -25,11 +25,16 @@ triggers:
 
 # pilot-honda
 
-Meta-orchestrator skill for BMad Method and GStack. Detects where you are in your project lifecycle, tells you exactly what to do next with exact commands, and acts as a universal command proxy for both plugins.
+Meta-orchestrator skill for BMad Method, GStack, and Taste-Skill. Detects where you are in your project lifecycle, tells you exactly what to do next with exact commands, and acts as a universal command proxy for all three plugins.
 
 ## Purpose
 
-pilot-honda solves one problem: **you have two powerful development methodologies (BMad Method and GStack) and you shouldn't have to think about which one to use.** This skill figures it out for you.
+pilot-honda solves one problem: **you have three powerful development plugins (BMad Method, GStack, and Taste-Skill) and you shouldn't have to think about which one to use.** This skill figures it out for you.
+
+The three plugins work as a system:
+- **BMad Method** — Creates the *what* (requirements, architecture, logic, stories, code)
+- **Taste-Skill** — Designs the *how it looks* (aesthetics, motion, typography, layout, image references)
+- **GStack** — Validates the *quality* (CEO review, eng review, code review, QA, security, deploy)
 
 It does three things:
 1. **Diagnoses** — Where are you in your project lifecycle?
@@ -68,6 +73,29 @@ pilot-honda reads from both plugins but NEVER writes to them:
 - Antigravity path: `D:\AntigravityPlugins\gstack\`
 - Claude Code path: `~/.claude/skills/gstack/` or wherever cloned
 - Key files: `SKILL.md` (main router with routing rules), individual SKILL.md files in each skill directory (e.g., `review/SKILL.md`, `qa/SKILL.md`)
+
+**Taste-Skill** (read-only) — locate the taste-skill directory:
+- Antigravity path: `D:\AntigravityPlugins\taste-skill\`
+- Claude Code path: `~/.claude/skills/taste-skill/` or wherever cloned
+- Key files: `skills/llms.txt` (skill catalog and descriptions)
+- **Default (v2):** `skills/taste-skill/SKILL.md` — full brief inference, multi-framework, 50+ pre-flight checks
+- **Legacy (v1):** `skills/taste-skill-v1/SKILL.md` — use ONLY if the user explicitly requests it, or if the scanner detects an existing project using v1-style Framer Motion `layoutId`/`staggerChildren` bento patterns
+- Sub-skills catalog:
+  | Command | SKILL.md Path | Purpose |
+  |---------|--------------|----------|
+  | `taste-design-system` | `skills/taste-skill/SKILL.md` | Full anti-slop design system (v2 default) |
+  | `taste-stitch` | `skills/stitch-skill/SKILL.md` | Generate DESIGN.md for AI-driven design |
+  | `taste-soft` | `skills/soft-skill/SKILL.md` | Premium soft UI with deep whitespace |
+  | `taste-minimalist` | `skills/minimalist-skill/SKILL.md` | Editorial / Notion-style monochrome |
+  | `taste-brutalist` | `skills/brutalist-skill/SKILL.md` | Raw Swiss-print / tactical telemetry UI |
+  | `taste-brandkit` | `skills/brandkit/SKILL.md` | Brand identity and logo generation |
+  | `taste-image-first` | `skills/image-to-code-skill/SKILL.md` | Image-first → analyze → implement |
+  | `taste-imagegen-web` | `skills/imagegen-frontend-web/SKILL.md` | Web section mockup images only |
+  | `taste-imagegen-mobile` | `skills/imagegen-frontend-mobile/SKILL.md` | Mobile screen mockup images only |
+  | `taste-apply` | `skills/taste-skill/SKILL.md` | Anti-slop polish on coded components |
+  | `taste-redesign` | `skills/redesign-skill/SKILL.md` | Audit and upgrade existing frontend |
+  | `taste-gpt` | `skills/gpt-tasteskill/SKILL.md` | Awwwards-level GSAP motion |
+  | `taste-output` | `skills/output-skill/SKILL.md` | Enforce complete code output, no lazy placeholders |
 
 **pilot-honda internal files** (read) — in the same directory as this SKILL.md:
 - `command-registry.md` — Full command mapping for both plugins
@@ -113,8 +141,8 @@ If the user is NOT resuming a flight or invoking a specific command, ask:
 >
 > **A) I'm starting something new** — Smart interview to find your starting path
 > **B) Scan my project** — Generate a maturity report for an existing project
-> **C) ✈️ Airplan Mode** — Full autopilot. I scan, plan, and execute everything using both BMad and GStack
-> **D) Show all commands** — Quick reference of 60+ available commands
+> **C) ✈️ Airplan Mode** — Full autopilot. I scan, plan, and execute everything using BMad, Taste-Skill, and GStack
+> **D) Show all commands** — Quick reference of 75+ available commands across all three plugins
 > **E) Run a specific command** — Tell me what to run and I'll find it
 
 If A → Go to Step 2 (Interview Mode)
@@ -337,11 +365,11 @@ phase_scores:
   security: [complete/partial/missing]
   shipping: [complete/partial/missing]
   documentation: [complete/partial/missing]
-active_plugin: [bmad/gstack/both]
+active_plugin: [bmad/gstack/taste/multiple]
 history:
   - [ISO timestamp]: Ran [command] ([Plugin] → [Execute/Validate]) — [Phase]
 last_command: [exact command string]
-last_command_plugin: [BMad/GStack]
+last_command_plugin: [BMad/GStack/Taste]
 last_command_type: [Execute/Validate]
 validation_pending: [paired validation command if applicable, or null]
 next_recommended: [skill name]
@@ -349,7 +377,18 @@ next_command: [exact command string]
 plugins_detected:
   bmad_installed: [true/false]
   gstack_installed: [true/false]
+  taste_installed: [true/false]
+  taste_version: [v2/v1/null]
   conflicts: [none/list]
+design_state:
+  has_frontend: [true/false]
+  platform: [web/mobile-ios/mobile-android/mobile-neutral/none]
+  design_system: [name or null]
+  dial_values: "VARIANCE:[X] MOTION:[Y] DENSITY:[Z]"
+  design_md_exists: [true/false]
+  brand_kit_exists: [true/false]
+  design_debt_detected: [true/false]
+  v1_patterns_detected: [true/false]
 artifacts_found:
   - [file path]: [phase it belongs to]
 source_files: [count]
@@ -533,6 +572,12 @@ See `.pilot-honda-flight-log.md` for the complete execution history.
 
 When generating the report, check for transition boundaries:
 
+- **BMad → Taste transition:** If PRD is complete and project has a frontend component (`has_frontend: true`), add:
+  > 🎨 **Design Phase Ready:** Your PRD is complete. Before architecture, establish your visual direction. Run `taste-design-system` to set the design language, or `taste-image-first` for visual references. This prevents costly visual rewrites later.
+
+- **Taste → GStack design validation:** After any Taste skill runs on design artifacts:
+  > ✅ **Design system established. Validate it:** Run `/plan-design-review` (GStack) to score each design dimension 0-10 and catch issues before coding begins.
+
 - **BMad → GStack transition:** If architecture + epics + readiness check are all complete, add:
   > 🔄 **Transition Point:** You've completed all BMad planning phases. You're ready to switch to GStack for execution. Start with `/plan-eng-review` to validate your architecture, then `/autoplan` for the full review pipeline.
 
@@ -541,6 +586,9 @@ When generating the report, check for transition boundaries:
 
 - **Phase gap alert:** If Phase 4 (implementation) is started but Phase 3 (architecture) is missing:
   > ⚠️ **Gap Detected:** You have code but no architecture documentation. This can cause drift. Consider running BMad `bmad-architecture` to document your current architecture (brownfield ratification) or GStack `/plan-eng-review` to audit it.
+
+- **Design debt alert:** If scanner detects 3+ design debt signals in an existing frontend (see scanner-rules.md):
+  > ⚠️ **Design Debt Detected:** Your frontend uses several generic AI design patterns. Before adding new features, run `taste-redesign` (Taste) for a targeted visual upgrade. This is a high-impact, low-risk improvement.
 
 ## Voice
 
@@ -554,9 +602,12 @@ pilot-honda speaks like a calm, experienced engineering manager:
 
 ## Constraints
 
-- NEVER modify files in the bmad-method or gstack plugin directories
+- NEVER modify files in the bmad-method, gstack, or taste-skill plugin directories
 - ALWAYS read the actual SKILL.md files when proxying commands — don't rely on summaries
 - ALWAYS save state to `.pilot-honda-state.md` after any diagnosis
-- ALWAYS include exact commands in recommendations — never say "use BMad" without specifying which skill and what to type
-- On Antigravity: skip bash preambles from both plugins, do not write CLAUDE.md or AGENTS.md
-- On Claude Code: GStack skills with preambles can run natively; for BMad follow the methodology content
+- ALWAYS include exact commands in recommendations — never say "use BMad" or "use Taste" without specifying which skill and what to type
+- **Taste-Skill v1/v2 rule:** Always default to taste-skill v2 (`skills/taste-skill/SKILL.md`). Only use v1 (`skills/taste-skill-v1/SKILL.md`) when the user explicitly requests it, or when the scanner detects v1-style Framer Motion `layoutId`/`staggerChildren` bento patterns in existing code
+- **Image generation awareness:** taste-skill sub-skills that require image generation (`taste-image-first`, `taste-imagegen-web`, `taste-imagegen-mobile`, `taste-brandkit`) should be flagged as requiring image generation capability. If unavailable on the current platform, note this and suggest `taste-design-system` or `taste-stitch` as text-based alternatives
+- **Taste scope boundary:** taste-skill is for landing pages, portfolios, marketing sites, and redesigns — NOT dashboards, data tables, multi-step product UIs, or admin panels. When the brief is one of the out-of-scope types, skip taste-skill entirely and say so explicitly
+- On Antigravity: skip bash preambles from all plugins, do not write CLAUDE.md or AGENTS.md
+- On Claude Code: GStack skills with preambles can run natively; for BMad and Taste follow the methodology content

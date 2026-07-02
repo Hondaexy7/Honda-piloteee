@@ -1,81 +1,68 @@
 <div align="center">
-  <h1>🧭 pilot-honda</h1>
-  <p><strong>A Meta-Orchestrator Skill for BMad Method & GStack</strong></p>
-  <p>One skill to rule them all. Detect project maturity, route to the right methodology, and proxy commands seamlessly across platforms.</p>
+  <h1>pilot-honda</h1>
+  <p><strong>A Meta-Orchestrator for BMad Method, Taste-Skill, & GStack</strong></p>
+  <p>A unified routing layer that detects project maturity and orchestrates three distinct AI development plugins across a single lifecycle.</p>
 </div>
 
 ---
 
-## 📑 Table of Contents
-- [What is pilot-honda?](#-what-is-pilot-honda)
-- [Key Features](#-key-features)
-- [Installation](#-installation)
-  - [For Antigravity IDE](#1-for-antigravity-ide)
-  - [For Claude Code](#2-for-claude-code)
-- [How to Use](#-how-to-use)
-  - [Project Navigator (Diagnosis)](#1-project-navigator-diagnosis)
-  - [✈️ Airplan Mode (Full Autopilot)](#2-️-airplan-mode-full-autopilot)
-  - [Universal Command Proxy](#3-universal-command-proxy)
-- [Under the Hood: The Unified Lifecycle](#-under-the-hood-the-unified-lifecycle)
-- [Architecture & File Structure](#-architecture--file-structure)
-- [Updating](#-updating)
-- [License](#-license)
+## Overview
 
----
+You have three powerful AI development plugins:
+- [BMad Method](https://github.com/bmad-code-org/bmad-method) (for architecture, product management, and agile execution)
+- [Taste-Skill](https://github.com/Leonxlnx/taste-skill) (for premium frontend design systems and aesthetic direction)
+- [GStack](https://github.com/garrytan/gstack) (for diff-level code review, QA, security, and shipping)
 
-## 🤔 What is pilot-honda?
-
-You have two powerful development methodologies: [BMad Method](https://github.com/bmad-code-org/bmad-method) (incredible for agile planning and architecture) and [GStack](https://github.com/garrytan/gstack) (incredible for sprint execution, reviews, and shipping). 
-
-**pilot-honda solves one problem: you shouldn't have to think about which one to use.**
-
-This custom skill sits above both plugins, acting as a single intelligent entry point. It figures out where you are in your project lifecycle and routes you to the exact command you need from the right methodology.
+**pilot-honda** acts as a traffic controller sitting above all three. Instead of manually deciding which plugin's command to run, you interact with pilot-honda. It diagnoses your project state and routes your intent to the correct plugin based on a unified 8-phase lifecycle model.
 
 It works natively in both **Antigravity IDE** and **Claude Code**.
 
 ---
 
-## 🍦 The Crème de la Crème (How it works in practice)
+## Core Mechanics
 
-Rather than giving you 80 different commands to choose from, `pilot-honda` extracts the absolute best parts—the crème de la crème—from each methodology and strings them together into a single "Golden Path".
+### Tri-Validation (Cross-Plugin Verification)
+pilot-honda orchestrates the plugins so they cover each other's blind spots. The core workflow is based on **Tri-Validation**:
 
-It surgically combines their strengths so they cover each other's blind spots:
+1. **BMad Creates:** Generates the PRD, wireframes, architecture, and baseline code.
+2. **Taste Designs:** Establishes the visual system, generates reference images, and polishes the frontend code to remove generic AI patterns.
+3. **GStack Validates:** Audits the architecture, reviews the code diffs for production bugs, runs QA in a browser, and handles deployment.
 
-**1. BMad for Architecture & Agile (The Creator)**
-BMad is undeniably better at deep system design and agile breakdown. We exclusively use BMad for:
-- **Creation:** Generating the PRD (`bmad-prd`), designing UX (`bmad-ux`), and writing the architecture (`bmad-architecture`).
-- **Agile Mechanics:** Breaking work into tickets (`bmad-create-epics-and-stories`), planning sprints (`bmad-sprint-planning`), and doing the initial story coding (`bmad-dev-story`).
+No single plugin does everything. pilot-honda ensures you never use BMad for QA, never use GStack for initial product briefs, and never use either for visual design when Taste-Skill is available.
 
-**2. GStack for Stress-Testing & Shipping (The Validator)**
-GStack is undeniably better at ruthless interrogation, diff-level code reviews, and production shipping. We exclusively use GStack for:
-- **Stress-Testing Strategy:** Interrogating the idea (`/office-hours`) and grilling the CEO on strategy (`/plan-ceo-review`).
-- **Stress-Testing Tech:** Auditing the BMad architecture to find edge cases (`/plan-eng-review`).
-- **Review & Ship:** Doing Staff-Engineer level code reviews (`/review`), live browser testing (`/qa`), and merging to production (`/ship`).
-
-By combining them, `pilot-honda` **never uses BMad for something GStack is better at, and never uses GStack for something BMad is better at.** You get dual-validation at every step: BMad creates, GStack validates.
-
----
-
-## ✨ Key Features
-
-- **🧠 Adaptive Diagnosis:** Tell it about a new idea, and it runs a smart, branching interview (max 5-7 questions) to find your starting point.
-- **🔍 Auto-Scanner:** Point it at an existing project, and it scans your artifacts (PRDs, tests, code, CI/CD) to generate a detailed Project Maturity Report.
-- **✈️ Airplan Mode:** Full autopilot. Scans your project, builds a dependency-ordered flight plan across both plugins, and auto-executes every step with gate checkpoints and dual-validation.
-- **🔀 Universal Command Proxy:** Type any command from either plugin (e.g., `/review`, `bmad-architecture`, `/qa`) and pilot-honda will execute the correct methodology natively.
-- **💾 Session Memory:** Remembers your project state between sessions via a `.pilot-honda-state.md` file, tracking your progress automatically.
-- **🛡️ Conflict Guard:** Safely manages environments where both BMad and GStack are installed, preventing overlapping actions.
-- **🌐 Cross-Platform:** 100% compatible with both Antigravity IDE and Claude Code from a single source of truth.
-- **🔄 Dual-Validation:** BMad creates, GStack validates (and vice versa) at every stage — more powerful than either plugin alone.
+### Features
+- **Adaptive Diagnosis:** A branching interview that finds your starting point based on how much documentation or code you already have.
+- **Codebase Scanner:** Scans your project for artifacts, CI/CD configs, and **Design Debt** to generate a Project Maturity Report.
+- **✈️ Airplan Mode (Autopilot):** Scans the project and builds a dependency-ordered execution plan. It automatically invokes commands across all three plugins in sequence, pausing only at designated Gate checkpoints for your approval.
+- **Universal Command Proxy:** Type any command from any of the three plugins (e.g., `/review`, `taste-design-system`, `bmad-architecture`) and pilot-honda will execute the correct methodology natively.
+- **Session Memory:** Tracks your progress automatically via a `.pilot-honda-state.md` file.
 
 ---
 
-## 🚀 Installation
+## The Unified Lifecycle
 
-pilot-honda is designed to be cloned once and symlinked to your AI assistants.
+pilot-honda maps the three plugins into an 8-phase execution model:
 
-**Prerequisites:** You must have [BMad Method](https://github.com/bmad-code-org/bmad-method) and [GStack](https://github.com/garrytan/gstack) installed on your machine.
+| Phase | Description | Routed Plugins |
+|-------|-------------|-------------------------|
+| **0. SPARK** | Raw idea, initial reframing | BMad → GStack |
+| **1. ANALYSIS** | Research and product briefs | BMad → GStack |
+| **2. PLANNING** | PRD and functional UX wireframes | BMad |
+| **2.5. DESIGN ENG.** | Visual direction and design systems | Taste-Skill → GStack |
+| **3. SOLUTIONING** | System architecture and epic breakdown | BMad → GStack |
+| **4. IMPLEMENTATION**| Code execution, visual polish, and review | BMad → Taste-Skill → GStack |
+| **5. SHIPPING** | PR, deployment, and live verification | GStack |
+| **6. REFLECTION** | Retrospectives and documentation | BMad → GStack |
 
-First, clone this repository:
+*(Note: Phase 2.5 is automatically skipped for backend-only, CLI, or API projects).*
+
+---
+
+## Installation
+
+**Prerequisites:** You must have the [BMad Method](https://github.com/bmad-code-org/bmad-method), [GStack](https://github.com/garrytan/gstack), and [Taste-Skill](https://github.com/Leonxlnx/taste-skill) repositories cloned locally.
+
+Clone this repository:
 ```bash
 git clone https://github.com/Hondaexy7/Honda-piloteee.git pilot-honda
 cd pilot-honda
@@ -89,12 +76,11 @@ Create a junction link from the Antigravity plugins directory to your cloned rep
 ```powershell
 New-Item -ItemType Junction -Path "$env:USERPROFILE\.gemini\config\plugins\pilot-honda" -Target "C:\path\to\your\cloned\pilot-honda" -Force
 ```
-
-Restart Antigravity IDE, and the plugin will load automatically.
+Restart Antigravity IDE. The plugin will load automatically.
 
 ### 2. For Claude Code
 
-Create a junction link from the Claude Code skills directory to the `skills/pilot-honda` folder inside the repository (Claude Code requires the SKILL.md to be at the root of the linked folder):
+Create a junction link from the Claude Code skills directory to the `skills/pilot-honda` folder inside the repository:
 
 **(Windows PowerShell):**
 ```powershell
@@ -102,116 +88,58 @@ $claudePath = "$env:USERPROFILE\.claude\skills"
 New-Item -Path $claudePath -ItemType Directory -Force
 New-Item -ItemType Junction -Path "$claudePath\pilot-honda" -Target "C:\path\to\your\cloned\pilot-honda\skills\pilot-honda" -Force
 ```
-
-Restart Claude Code. You will now see `/pilot-honda` when you type `/`.
-
----
-
-## 🛠️ How to Use
-
-### 1. Project Navigator (Diagnosis)
-
-When you're lost or starting out, ask pilot-honda for directions:
-- **In Antigravity:** Type `"pilot-honda"` or ask *"what should I do next?"*
-- **In Claude Code:** Type `/pilot-honda`
-
-It will offer you five modes:
-- **A) Start something new:** A quick interview to route your raw idea. Includes dual-validation pairs and a full journey preview.
-- **B) Scan existing project:** A deep analysis of your codebase maturity, with progress comparison, effort estimates, and paired recommendations.
-- **C) ✈️ Airplan Mode:** Full autopilot (see below).
-- **D) Show all commands:** A phase-grouped reference of all 60+ commands, their validation pairs, and a "where to start" guide.
-- **E) Run a specific command:** Tell it what to run.
-
-### 2. ✈️ Airplan Mode (Full Autopilot)
-
-The flagship feature. Say `"airplan"` or select option C.
-
-**What happens:**
-1. **Scan** — pilot-honda scans your entire codebase and docs
-2. **Flight Plan** — generates a dependency-ordered execution plan across both BMad and GStack, skipping phases you've already completed
-3. **Gate 0** — shows you the plan and asks for approval
-4. **Auto-Execute** — runs each step in sequence, automatically invoking the right skill from the right plugin
-5. **Gate Checkpoints** — pauses at 3 critical transitions (planning readiness, implementation readiness, ship readiness) for your review
-6. **Flight Complete** — generates a final report with full plugin usage stats
-
-**Dual-Validation:** After BMad creates an artifact (e.g., architecture), GStack automatically validates it (e.g., `/plan-eng-review`). This cross-plugin check is what makes pilot-honda more powerful than either methodology alone.
-
-**Pause & Resume:** Close mid-flight, start a new session, say `"pilot-honda"` — it picks up exactly where you left off.
-
-**Files generated:**
-- `.pilot-honda-flight-plan.md` — tracks every step with status and timestamps
-- `.pilot-honda-flight-log.md` — append-only black box recorder
-
-### 3. Universal Command Proxy
-
-You don't need to invoke pilot-honda directly if you know what you want. Just type the command!
-
-Examples:
-- `"Run /office-hours"` → Executes GStack's product reframing
-- `"Invoke bmad-architecture"` → Executes BMad's system design agent
-- `"Run /review"` → Executes GStack's diff-level staff engineer review
-- `"Run bmad-code-review"` → Executes BMad's story-level acceptance criteria review
-
-pilot-honda will intercept the request, look up the command in its registry, locate the specific `SKILL.md` in your local BMad or GStack installation, and execute the exact methodology.
-
-**Post-Execution Magic:** After the command finishes, pilot-honda will proactively suggest the logical validation pair (e.g., "Want me to run `/plan-eng-review` to cross-check this?") and tell you the next step in your lifecycle.
+Restart Claude Code. You will now see `/pilot-honda` available as a slash command.
 
 ---
 
-## 🗺️ Under the Hood: The Unified Lifecycle
+## Usage Guide
 
-pilot-honda seamlessly maps BMad's 4-phase agile model to GStack's sprint cycle:
+To enter the main orchestrator menu, type:
+- **In Antigravity:** `"pilot-honda"` or *"what should I do next?"*
+- **In Claude Code:** `/pilot-honda`
 
-| Phase | Description | Recommended Methodology |
-|-------|-------------|-------------------------|
-| **Phase 0: SPARK** | Raw idea, no documentation | BMad (brainstorming) / GStack (`/office-hours`) |
-| **Phase 1: ANALYSIS** | Research, validation, briefs | BMad (PRFAQ, product-brief) |
-| **Phase 2: PLANNING** | PRD, UX design, requirements | BMad (PRD) / GStack (`/plan-design-review`) |
-| **Phase 3: SOLUTIONING** | Architecture, epics, stories | BMad (Architecture) → GStack (`/plan-eng-review`) |
-| **Phase 4: IMPLEMENTATION**| Code, tests, reviews, QA | Both (BMad for story execution, GStack for QA/review) |
-| **Phase 5: SHIPPING** | PR, deploy, verification | GStack (`/ship`, `/land-and-deploy`) |
-| **Phase 6: REFLECTION** | Retrospectives, documentation | Both (BMad retros, GStack `/retro`) |
+You will be presented with five options:
+- **A) Start something new:** Initiates the adaptive interview to route your project.
+- **B) Scan existing project:** Analyzes your codebase and outputs a maturity report.
+- **C) Airplan Mode:** Full autopilot across all three plugins.
+- **D) Show all commands:** A phase-grouped reference of all 75+ available commands.
+- **E) Run a specific command:** Direct execution proxy.
+
+Alternatively, you can bypass the menu entirely by just typing the command you want (e.g., `"Run taste-redesign"` or `"Invoke bmad-prd"`). pilot-honda will automatically intercept it, locate the correct source file, and execute the methodology.
 
 ---
 
-## 🏗️ Architecture & File Structure
+## Architecture
+
+The orchestration logic is contained in markdown files, making it completely transparent and editable by the LLM:
 
 ```text
 pilot-honda/
 ├── plugin.json                          # Antigravity plugin manifest
-├── README.md                            # This comprehensive guide
+├── README.md                            # Documentation
 └── skills/
     └── pilot-honda/
-        ├── SKILL.md                     # Core brain (Claude Code & Antigravity logic)
-        ├── command-registry.md          # Maps all 60+ commands to source plugins
-        ├── phase-map.md                 # Unified Phase 0-6 lifecycle model
-        ├── scanner-rules.md             # Heuristics for auto-detecting maturity
-        ├── interview-tree.md            # Adaptive decision tree for new ideas
-        └── airplan-pipeline.md          # Master execution pipeline for Airplan Mode
+        ├── SKILL.md                     # Core routing logic (v3.0.0)
+        ├── command-registry.md          # Maps all 75+ commands to source plugins
+        ├── phase-map.md                 # Unified Phase 0-6 lifecycle definitions
+        ├── scanner-rules.md             # Codebase analysis heuristics
+        ├── interview-tree.md            # Adaptive branching for new projects
+        └── airplan-pipeline.md          # Master execution pipeline for autopilot
 ```
-
-The core `SKILL.md` contains YAML frontmatter for Claude Code slash-command registration, but relies on platform-agnostic heuristics to function perfectly in Antigravity as well.
 
 ---
 
-## 🔄 Updating
+## Updating
 
-Because pilot-honda is a meta-orchestrator, it reads the *current* state of your BMad and GStack installations. 
+pilot-honda reads the *current* state of your BMad, Taste-Skill, and GStack installations. When those upstream plugins update their methodologies, you do not need to update pilot-honda. Just `git pull` those respective repositories, and pilot-honda will execute their newest instructions automatically.
 
-To update the core methodologies, just pull their repos:
-```bash
-cd path/to/bmad-method && git pull
-cd path/to/gstack && git pull
-```
-pilot-honda will automatically pick up their changes.
-
-To update pilot-honda itself:
+To update the pilot-honda orchestration rules itself:
 ```bash
 cd path/to/pilot-honda && git pull
 ```
 
 ---
 
-## 📜 License
+## License
 
 MIT License. See `LICENSE` for more information.

@@ -62,6 +62,69 @@ Options:
 
 ---
 
+## Q2.5: Frontend Detection (Design Engineering entry point)
+
+> **"Does your project have a user-facing frontend — a website, web app, or mobile app?"**
+
+> *Ask this question after the user has a clear concept but before moving to architecture. Skip if already obvious from context (e.g., user said "API" or "CLI tool").*
+
+Options:
+- **A) Yes — and the visual quality matters a lot** → Set `has_frontend: true`. Go to Q2.6
+
+- **B) Yes — but it's functional, design isn't the priority** → Set `has_frontend: true`, skip Phase 2.5. Note:
+  - `taste-output` is still available anytime to enforce complete code output
+  - `taste-redesign` can be run later if the UI needs a visual upgrade
+  - **Continue to Q4 (architecture)**
+
+- **C) No — it's a backend, API, CLI, or data pipeline** → Set `has_frontend: false`. Skip Phase 2.5 entirely. Note:
+  - Taste-Skill does not apply to this project
+  - **Continue to Q4 (architecture)**
+
+---
+
+## Q2.6: Design Direction (only if has_frontend: true and design quality matters)
+
+> **"What kind of visual style are you going for?"**
+
+Options:
+- **A) Premium / modern / agency-level — I want it to look expensive** → Recommend:
+  - Taste `taste-soft` for the premium soft UI archetype (VARIANCE:8, MOTION:7, DENSITY:3)
+  - Then `taste-imagegen-web` or `taste-imagegen-mobile` for visual references
+  - Command: `"Run taste-soft"` then `"Run taste-imagegen-web"`
+  - Then validate: `"Run /plan-design-review"` (GStack → Validate)
+  - **STOP. Generate mini-report and save state.**
+
+- **B) Clean / minimal / editorial — like Notion or Linear** → Recommend:
+  - Taste `taste-minimalist` (VARIANCE:5, MOTION:3, DENSITY:3)
+  - Command: `"Run taste-minimalist"`
+  - Then validate: `"Run /plan-design-review"` (GStack → Validate)
+  - **STOP. Generate mini-report and save state.**
+
+- **C) Bold / experimental / Awwwards-level** → Recommend:
+  - Taste `taste-gpt` for Awwwards-level GSAP motion and design (VARIANCE:9, MOTION:8, DENSITY:3)
+  - Or `taste-brutalist` for raw Swiss-print aesthetic
+  - Command: `"Run taste-gpt"` or `"Run taste-brutalist"`
+  - Then validate: `"Run /plan-design-review"` (GStack → Validate)
+  - **STOP. Generate mini-report and save state.**
+
+- **D) I have an existing site I want to upgrade** → Recommend:
+  - Taste `taste-redesign` — audits the existing frontend and applies targeted upgrades
+  - Command: `"Run taste-redesign"`
+  - Then verify in browser: `"Run /qa"` (GStack → Validate)
+  - **STOP. Generate mini-report and save state.**
+
+- **E) I'm not sure — help me decide from the brief** → Recommend:
+  - Taste `taste-design-system` (v2) — reads the brief, infers audience and vibe, sets dials, then generates the design direction
+  - Command: `"Run taste-design-system"`
+  - Then validate: `"Run /plan-design-review"` (GStack → Validate)
+  - **STOP. Generate mini-report and save state.**
+
+**Mobile platform auto-routing (check before asking Q2.6):**
+If the project uses React Native, Flutter, Swift, Kotlin, or Expo, automatically route all image-generation steps to `taste-imagegen-mobile` instead of `taste-imagegen-web`. Mention this to the user:
+> "I detected a mobile project. Image generation will use `taste-imagegen-mobile` and will ask you to choose: iOS, Android, or Neutral style."
+
+---
+
 ## Q3: Clear Idea, Needs Documentation (Phase 1 — ANALYSIS)
 
 > **"What kind of documentation do you need?"**
@@ -137,6 +200,7 @@ Options:
 - **A) Write the code** → Recommend:
   - BMad `bmad-dev-story` for structured story-by-story development (BMad → Execute)
   - Command: `"Run bmad-dev-story"`
+  - Then apply visual polish: `"Run taste-apply"` (Taste → Execute, if UI story)
   - Then validate with GStack: `"Run /review"` (GStack → Validate)
 
 - **B) Review existing code** → Recommend:
@@ -153,6 +217,12 @@ Options:
   - GStack `/review` first, then `/ship` to push PR (GStack → Execute)
   - Commands: `"Run /review"` then `"Run /ship"`
 
+- **E) Polish the UI — make it look premium** → Recommend:
+  - Taste `taste-apply` for anti-slop polish on existing coded components
+  - Or `taste-redesign` for a full visual audit and targeted upgrade
+  - Then validate with GStack `/design-review` (GStack → Validate)
+  - Commands: `"Run taste-apply"` or `"Run taste-redesign"`, then `"Run /design-review"`
+
 ---
 
 ## Mini-Report Format
@@ -163,8 +233,11 @@ After reaching a recommendation, generate a brief report:
 ## 🧭 pilot-honda — Your Starting Point
 
 **Current Phase:** [Phase name]
-**Active Plugin:** [BMad Method / GStack / Both]
+**Active Plugin:** [BMad Method / GStack / Taste-Skill / Multiple]
 **Estimated Steps to Ship:** [count from phase-map.md]
+**Has Frontend:** [Yes / No / Not determined]
+**Design Direction:** [Established / Not yet / Not applicable]
+**Design Dials:** VARIANCE:[X] MOTION:[Y] DENSITY:[Z] (or "not set")
 
 ### Your Path Forward (with validation):
 1. **Now:** `[exact command]` (Plugin → Execute)
@@ -174,13 +247,15 @@ After reaching a recommendation, generate a brief report:
 
 ### Your Full Journey Preview:
 [Current phase] → [next phase] → [next phase] → ... → SHIPPED
-Example: "SOLUTIONING → IMPLEMENTATION → SHIPPING → REFLECTION"
+Example: "PLANNING → DESIGN ENG. → SOLUTIONING → IMPLEMENTATION → SHIPPING → REFLECTION"
 Estimated remaining phases: [X] | Estimated remaining steps: ~[Y]
 
 ### For Future Reference:
-- When you finish planning → Switch to GStack for execution
+- When you finish planning → Taste-Skill for design, then GStack for execution
 - For new features later → BMad `bmad-product-brief` or GStack `/office-hours`
 - For bug fixes → GStack `/investigate`
+- To polish the UI anytime → `taste-apply` or `taste-redesign`
+- To enforce complete code output → `taste-output`
 - To check where you are anytime → `pilot-honda`
 - To go full autopilot → `pilot-honda` → Airplan Mode
 ```
